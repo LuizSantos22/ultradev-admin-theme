@@ -1,8 +1,8 @@
 {
-    "name": "ultradev/mercadopago-openmage",
-    "description": "MercadoPago checkout transparente (CC, Pix, Boleto) via Orders API para OpenMage 20.x / PHP 8.2+",
+    "name": "ultradev/admintheme-openmage",
+    "description": "Ultra Admin Theme: tema de admin com sidebar vertical e painel resumido para OpenMage 20.x / PHP 8.1+",
     "type": "magento-module",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "license": "MIT",
     "authors": [
         {
@@ -20,5 +20,5 @@
         "magento-deploystrategy": "copy",
         "auto-append-gitignore": true
     },
-    "keywords": ["openmage", "magento", "mercadopago", "orders-api", "pix", "boleto", "ultradev"]
+    "keywords": ["openmage", "magento", "admin", "admintheme", "sidebar", "dashboard", "ultradev"]
 }
