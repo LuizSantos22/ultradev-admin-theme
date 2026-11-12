@@ -1,0 +1,68 @@
+<?php
+/** @var Mage_Adminhtml_Block_Page_Menu $this */
+$menu = $this->getMenuArray();
+$self = $this;
+
+$icons = array(
+    'dashboard'  => '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+    'sales'      => '<path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4z"/>',
+    'catalog'    => '<path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>',
+    'customer'   => '<circle cx="9" cy="8" r="4"/><path d="M2 21v-1a6 6 0 0112 0v1M16 4a4 4 0 010 8M22 21v-1a6 6 0 00-4-5.6"/>',
+    'promo'      => '<path d="M20 12v8H4v-8M2 7h20v5H2zM12 22V7M12 7H8a2.5 2.5 0 110-5c3 0 4 5 4 5zm0 0h4a2.5 2.5 0 100-5c-3 0-4 5-4 5z"/>',
+    'newsletter' => '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+    'cms'        => '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>',
+    'report'     => '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+    'system'     => '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/>',
+);
+$fallback = '<circle cx="12" cy="12" r="3"/>';
+
+$sub = function (array $items, $depth) use ($self, &$sub) {
+    $h = '';
+    foreach ($items as $it) {
+        $click = !empty($it['click']) ? ' onclick="' . $self->escapeHtml($it['click']) . '"' : '';
+        $title = !empty($it['title']) ? ' title="' . $self->escapeHtml($it['title']) . '"' : '';
+        $cls   = 'd' . $depth . (!empty($it['active']) ? ' on' : '');
+        $h .= '<a href="' . $self->escapeHtml($it['url']) . '" class="' . $cls . '"' . $click . $title . '>'
+            . $self->escapeHtml($it['label']) . '</a>';
+        if (!empty($it['children'])) {
+            $h .= '<div class="ux-sub2">' . $sub($it['children'], $depth + 1) . '</div>';
+        }
+    }
+    return $h;
+};
+
+$user = Mage::getSingleton('admin/session')->getUser();
+$ver  = method_exists('Mage', 'getOpenMageVersion') ? Mage::getOpenMageVersion() : Mage::getVersion();
+$i = 0;
+?>
+<aside class="ux-side" id="ux-side" aria-label="Navegação principal">
+    <div class="ux-brand">
+        <div class="ux-logo"><svg viewBox="0 -4 74 72" aria-hidden="true"><path d="M37,64 C19.336,64 5,49.664 5,32 C5,14.336 19.336,0 37,0 L61,0 C65.416,0 69,3.584 69,8 L69,32 C69,49.664 54.664,64 37,64" stroke-width="6" stroke-linejoin="round"/><text x="35" y="44" text-anchor="middle" font-family="Arial,sans-serif" font-size="34" font-weight="700" fill="currentColor" stroke="none">U</text></svg></div>
+        <div class="ux-lbl"><b>Ultra Eletrônicos</b><small>OpenMage <?php echo $this->escapeHtml($ver) ?></small></div>
+    </div>
+
+    <nav class="ux-nav">
+    <?php foreach ($menu as $key => $item):
+        $children = !empty($item['children']) ? $item['children'] : array();
+        $icon     = isset($icons[$key]) ? $icons[$key] : $fallback;
+        $active   = !empty($item['active']);
+        $label    = $this->escapeHtml($item['label']);
+        $i++;
+        if (!$children): ?>
+            <a href="<?php echo $this->escapeHtml($item['url']) ?>" class="ux-item<?php echo $active ? ' on' : '' ?>" title="<?php echo $label ?>">
+                <svg viewBox="0 0 24 24"><?php echo $icon ?></svg><span class="ux-lbl"><?php echo $label ?></span>
+            </a>
+        <?php else: ?>
+            <button type="button" class="ux-item ux-group<?php echo $active ? ' cur' : '' ?>" title="<?php echo $label ?>"
+                    aria-expanded="<?php echo $active ? 'true' : 'false' ?>" aria-controls="ux-s<?php echo $i ?>">
+                <svg viewBox="0 0 24 24"><?php echo $icon ?></svg><span class="ux-lbl"><?php echo $label ?></span>
+                <svg class="ux-chev ux-lbl" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <div class="ux-sub<?php echo $active ? ' open' : '' ?>" id="ux-s<?php echo $i ?>"><div><?php echo $sub($children, 1) ?></div></div>
+        <?php endif;
+    endforeach; ?>
+    </nav>
+
+    <div class="ux-sfoot"><span class="ux-dot"></span><div class="ux-lbl"><?php echo $this->escapeHtml($user ? $user->getUsername() : '') ?> · online</div></div>
+</aside>
+<div class="ux-scrim" id="ux-scrim"></div>
