@@ -1,0 +1,76 @@
+<?php
+/** @var Mage_Adminhtml_Block_Page_Header $this */
+$user     = Mage::getSingleton('admin/session')->getUser();
+$username = $user ? $user->getUsername() : '';
+$initials = strtoupper(mb_substr($username, 0, 2));
+$canSearch = Mage::getSingleton('admin/session')->isAllowed('admin/global_search');
+
+$unread = 0;
+try {
+    $unread = (int)Mage::getResourceModel('adminnotification/inbox_collection')
+        ->addFieldToFilter('is_remove', 0)
+        ->addFieldToFilter('is_read', 0)
+        ->getSize();
+} catch (Exception $e) {
+}
+
+$storeUrl = Mage::app()->getDefaultStoreView()->getBaseUrl();
+?>
+<script>
+document.body.classList.add('ux-shell');
+try { if (innerWidth > 860 && localStorage.getItem('ux-nav') === '1') document.body.classList.add('nav-open'); } catch (e) {}
+</script>
+<header class="ux-top">
+    <button type="button" class="ux-btn ux-ico ux-menu" id="ux-menu" aria-label="Alternar menu" aria-expanded="false" aria-controls="ux-side">
+        <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+
+    <?php if ($canSearch): ?>
+    <div class="ux-search" role="search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg>
+        <span id="global_search_indicator" class="autocomplete-indicator" style="display:none"></span>
+        <input id="global_search" name="query" type="search" autocomplete="off" placeholder="Buscar pedidos, clientes e produtos" aria-label="Buscar no sistema">
+        <kbd>Ctrl K</kbd>
+        <div id="global_search_autocomplete" class="autocomplete"></div>
+        <script>
+            new Ajax.Autocompleter(
+                'global_search',
+                'global_search_autocomplete',
+                '<?php echo $this->getUrl('adminhtml/index/globalSearch') ?>',
+                {
+                    paramName: 'query',
+                    minChars: 2,
+                    indicator: 'global_search_indicator',
+                    updateElement: function (li) { location.href = li.getAttribute('url'); },
+                    evalJSON: 'force'
+                }
+            );
+        </script>
+    </div>
+    <?php endif; ?>
+
+    <div class="ux-sp"></div>
+
+    <a class="ux-btn ux-store" href="<?php echo $this->escapeHtml($storeUrl) ?>" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6v6M20 4L10 14"/></svg><span>Ver loja</span>
+    </a>
+
+    <button type="button" class="ux-btn ux-ico" id="ux-theme" aria-label="Alternar tema">
+        <svg class="ux-moon" viewBox="0 0 24 24"><path d="M20 15A9 9 0 018.6 3.6 9 9 0 1020 15z"/></svg>
+        <svg class="ux-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg>
+    </button>
+
+    <a class="ux-btn ux-ico" href="<?php echo $this->escapeHtml($this->getUrl('adminhtml/notification/index')) ?>" aria-label="Notificações<?php echo $unread ? ', ' . $unread . ' nova(s)' : '' ?>">
+        <svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 004 0"/></svg>
+        <?php if ($unread): ?><span class="ux-badge"></span><?php endif; ?>
+    </a>
+
+    <a class="ux-user" href="<?php echo $this->escapeHtml($this->getUrl('adminhtml/system_account/index')) ?>">
+        <span class="ux-av"><?php echo $this->escapeHtml($initials) ?></span>
+        <div><b><?php echo $this->escapeHtml($username) ?></b><small>Minha conta</small></div>
+    </a>
+
+    <a class="ux-btn ux-ico" href="<?php echo $this->escapeHtml($this->getLogoutLink()) ?>" aria-label="Sair" title="Sair">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+    </a>
+</header>
