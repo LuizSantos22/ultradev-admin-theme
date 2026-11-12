@@ -1,6 +1,4 @@
 <?xml version="1.0"?>
 <theme>
-    <!-- Se esta pasta não existir no seu servidor o fallback é ignorado sem erro.
-         Confira com: ls app/design/adminhtml/default/ -->
-    <parent>default/openmage</parent>
+    <parent>default/default</parent>
 </theme>
