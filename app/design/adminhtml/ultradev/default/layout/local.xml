@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<layout>
+    <default>
+        <reference name="head">
+            <action method="addCss"><name>css/ultra.css</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/ultra.js</name></action>
+        </reference>
+    </default>
+
+    <adminhtml_index_login>
+        <reference name="head">
+            <action method="addCss"><name>css/ultra.css</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/ultra.js</name></action>
+        </reference>
+    </adminhtml_index_login>
+
+    <adminhtml_dashboard_index>
+        <reference name="content">
+            <action method="unsetChild"><name>dashboard</name></action>
+            <block type="ultradev_admintheme/dashboard" name="ultra.dashboard" template="dashboard/ultra.phtml" />
+        </reference>
+    </adminhtml_dashboard_index>
+</layout>
