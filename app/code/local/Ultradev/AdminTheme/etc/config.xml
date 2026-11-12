@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ultradev_AdminTheme>
+            <version>1.0.0</version>
+        </Ultradev_AdminTheme>
+    </modules>
+    <global>
+        <blocks>
+            <ultradev_admintheme>
+                <class>Ultradev_AdminTheme_Block</class>
+            </ultradev_admintheme>
+        </blocks>
+    </global>
+    <stores>
+        <admin>
+            <design>
+                <package>
+                    <name>ultradev</name>
+                </package>
+                <theme>
+                    <default>default</default>
+                </theme>
+            </design>
+        </admin>
+    </stores>
+</config>
