@@ -9,7 +9,7 @@ class Ultradev_AdminTheme_Model_Observer
     public function selectTheme(Varien_Event_Observer $observer)
     {
         if (Mage::getStoreConfigFlag(self::XML_PATH_ENABLE)) {
-            Mage::getDesign()->setArea('adminhtml')->setTheme('ultra');
+            Mage::getDesign()->setArea('adminhtml')->setPackageName('default')->setTheme('ultra');
         }
         return $this;
     }
