@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+    A lista de removeItem de CSS/JS legado de IE segue a ideia do tema
+    Mageek_OpenmageTheme (AFL 3.0, Jindra Hejlik).
+-->
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="removeItem"><type>skin_css</type><name>iestyles.css</name></action>
+            <action method="removeItem"><type>skin_css</type><name>below_ie7.css</name></action>
+            <action method="removeItem"><type>skin_css</type><name>ie7.css</name></action>
+            <action method="removeItem"><type>js</type><name>lib/ds-sleight.js</name></action>
+            <action method="removeItem"><type>js</type><name>varien/iehover-fix.js</name></action>
+            <action method="removeItem"><type>skin_css</type><name>menu.css</name></action>
+            <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css2?family=Bitter:wght@400..800&amp;family=Open+Sans:wght@400..700&amp;display=swap</href></action>
+            <action method="addCss"><name>css/ultra.css</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/ultra.js</name></action>
+        </reference>
+    </default>
+
+    <adminhtml_dashboard_index>
+        <reference name="content">
+            <action method="unsetChild" ifconfig="admin/ultradev_admintheme/dashboard"><name>dashboard</name></action>
+            <block type="ultradev_admintheme/dashboard" name="ultra.dashboard" template="ultradev/admintheme/dashboard.phtml" ifconfig="admin/ultradev_admintheme/dashboard" />
+        </reference>
+    </adminhtml_dashboard_index>
+</layout>
