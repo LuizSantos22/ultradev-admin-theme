@@ -1,0 +1,4 @@
+app/etc/modules/Ultradev_AdminTheme.xml        app/etc/modules/Ultradev_AdminTheme.xml
+app/code/community/Ultradev/AdminTheme         app/code/community/Ultradev/AdminTheme
+app/design/adminhtml/default/ultra             app/design/adminhtml/default/ultra
+skin/adminhtml/default/ultra                   skin/adminhtml/default/ultra
