@@ -1,0 +1,30 @@
+<?php
+/** @var Mage_Adminhtml_Block_Page_Footer $this */
+$ver  = method_exists('Mage', 'getOpenMageVersion') ? Mage::getOpenMageVersion() : Mage::getVersion();
+$base = rtrim(Mage::app()->getDefaultStoreView()->getBaseUrl(), '/');
+?>
+<footer class="ux-foot">
+    <div class="ux-fl">
+        <a href="<?php echo $this->escapeHtml($base) ?>/contacts" target="_blank" rel="noopener">Fale conosco</a>
+        <a href="<?php echo $this->escapeHtml($base) ?>/rastreamento" target="_blank" rel="noopener">Rastrear pedido</a>
+        <a href="<?php echo $this->escapeHtml($base) ?>/perguntas-frequentes" target="_blank" rel="noopener">Perguntas frequentes</a>
+        <a href="<?php echo $this->escapeHtml($base) ?>/sitemap" target="_blank" rel="noopener">Mapa do site</a>
+    </div>
+    <p>
+        © 2011–<?php echo date('Y') ?> Ultra Eletrônicos · OpenMage <?php echo $this->escapeHtml($ver) ?> ·
+        <a href="https://www.openmage.org" target="_blank" rel="noopener">Projeto OpenMage</a> ·
+        <a href="https://github.com/OpenMage/magento-lts/issues" target="_blank" rel="noopener">Reportar problemas</a>
+    </p>
+    <?php if (method_exists($this, 'getLanguageSelect')): ?>
+        <div class="ux-lang"><?php echo $this->getLanguageSelect() ?></div>
+        <script>
+            (function () {
+                var s = document.getElementById('interface_locale');
+                if (!s) return;
+                s.addEventListener('change', function () {
+                    setLocation('<?php echo $this->getChangeLocaleUrl() ?>locale/' + s.value + '/<?php echo $this->getRefererParamName() ?>/<?php echo $this->getUrlForReferer() ?>');
+                });
+            })();
+        </script>
+    <?php endif; ?>
+</footer>
